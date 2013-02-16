@@ -5,6 +5,8 @@ Simple Erlang application, with a REST API and a RabbitMQ listener, for sending 
 
 You need to be a registered Clickatell customer and to have enabled their HTTP API for your account to use this app. Note that Clickatell enforces ccontrol over the sender ids to avoid spoofing. All sender ids need to be registered with them.
 
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 
 ## Dependencies ##
 
