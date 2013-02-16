@@ -1,0 +1,4 @@
+{application,clickatell_client}.
+{packages,[]}.
+{modules,[clickatellworker,sms_app,sms_gen_server,sms_queue,sms_server,
+          sms_sup,sms_utils]}.

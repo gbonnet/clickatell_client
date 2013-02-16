@@ -1,0 +1,15 @@
+{application,clickatell_client,
+             [{description,"Erlang Client for Clickatell SMS HTTP API"},
+              {vsn,"1.0.0"},
+              {registered,[clickatell_client,sms_server]},
+              {applications,[kernel,stdlib,log4erl,inets]},
+              {mod,{clickatell_client,[]}},
+              {start_phases,[]},
+              {modules,[
+                %% App File and Top Supervisor
+                clickatell_client,sms_sup,
+                %% Gen servers and workers
+                sms_server,clickatellworker,sms_utils,sms_queue,
+                %% EUnit tests
+                sms_test_all,sms_test_worker,sms_test_listener
+                ]}]}.

@@ -1,0 +1,37 @@
+<erl>
+
+out(Arg) ->
+    % extracts URL parameters into a list of tuples {key, value}
+    Params = yaws_api:parse_query(Arg), 
+   
+    % matches on the list of tuples to extract the values : Action, To, From (optional) and Msg
+    % Feeds the result in Response variable to be displayed on the page
+    Response = case Params of
+	    [{"action",Action},{"to",To},{"from",From},{"msg",Msg}] ->
+            case Action of 
+               "send" -> sms_server:send([To],From,Msg);
+                "send_to_many" -> sms_server:send(string:tokens(To,","),From,Msg);
+                "send_to_list" -> sms_server:send(list_to_atom(To),From,Msg);
+                _ -> {error, unhandled_action}
+            end;
+        % same with no FROM field
+	    [{"action",Action},{"to",To},{"msg",Msg}] ->
+            case Action of 
+                "send" -> sms_server:send([To],Msg);
+                "send_to_many" -> sms_server:send(string:tokens(To,","),Msg);
+                "send_to_list" -> sms_server:send(list_to_atom(To),Msg);
+                _ -> {error, unhandled_action}
+            end;
+        % If no "action" is supplied : 'send' is assumed
+	    [{"to",To},{"from",From},{"msg",Msg}] ->
+	        clickatell_client:send([string:tokens(To,",")],From,Msg);
+        % same with no From field
+        [{"to",To},{"msg",Msg}] ->
+            clickatell_client:send([string:tokens(To,",")],Msg);            
+        _ ->
+            {error, unhandled_parameters}
+    end,
+    {html, yaws_api:f("~p",[Response])}.
+
+</erl>
+
